@@ -15,6 +15,7 @@ set(COLCON_PACKAGE_DEPENDENCIES
   Eigen3
   rclcpp
   rosbag2_cpp
+  rosbag2_storage
   std_msgs
   yaml-cpp
   OpenMP
@@ -24,6 +25,7 @@ set(COLCON_PACKAGE_DEPENDENCIES
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rosbag2_cpp REQUIRED)
+find_package(rosbag2_storage REQUIRED)
 find_package(Boost REQUIRED filesystem)
 find_package(std_msgs REQUIRED)
 find_package(yaml-cpp REQUIRED)
