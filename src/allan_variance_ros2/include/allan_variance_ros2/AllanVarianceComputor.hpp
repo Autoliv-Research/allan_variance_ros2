@@ -75,6 +75,7 @@ public:
 
   void run(std::string bag_path);
   void closeOutputs();
+  std::string getOutputFilePath() const; 
   void allanVariance();
   void writeAllanDeviation(std::vector<double> variance, double period);
 

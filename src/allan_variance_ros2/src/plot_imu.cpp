@@ -1,4 +1,3 @@
-
 #include "allan_variance_ros2/plot_imu.hpp"
 
 void plot_imu(std::string bag_path, std::string imu_topic) {
@@ -30,7 +29,7 @@ void plot_imu(std::string bag_path, std::string imu_topic) {
 
     std::vector<rosbag2_storage::TopicMetadata> available_topics = bag.get_all_topics_and_types();
 
-    for (const auto available_topic : available_topics)
+    for (const auto& available_topic : available_topics)
     {
       if (available_topic.name == imu_topic)
       {
@@ -68,11 +67,16 @@ void plot_imu(std::string bag_path, std::string imu_topic) {
       lastImuTime_ = tCurrNanoSeconds_;
 
       // Log data to the internal buffer.
-      rec.set_time_nanos("header_timestamp", (int64_t)tCurrNanoSeconds_);
-      rec.set_time_nanos("received_timestamp", msg->time_stamp);
-      rec.log("acc/x", rerun::Scalar(imu9dof_msg->linear_acceleration.x));
+      rec.set_time_timestamp_nanos_since_epoch("header_timestamp", (int64_t)tCurrNanoSeconds_);
+      rec.set_time_timestamp_nanos_since_epoch("received_timestamp", msg->time_stamp);
+      // Fix: Use rerun::archetypes::Scalar for logging scalar values
+      rec.log("acc/x", rerun::archetypes::Scalars(imu9dof_msg->linear_acceleration.x));
     }
-    rec.save((std::string)"rerun_file.rrd");
+    auto result = rec.save((std::string)"rerun_file.rrd");
+    if (result.is_err()) {
+      // Fix: Access error directly without .error.description
+      RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to save rerun file");
+    }
 
     if (!rclcpp::ok())
     {
@@ -110,4 +114,3 @@ int main(int argc, char** argv) {
 
   return 0;
 }
-

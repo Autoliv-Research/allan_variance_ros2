@@ -131,7 +131,12 @@ void AllanVarianceComputor::run(std::string bag_path) {
  
 void AllanVarianceComputor::closeOutputs() { 
   av_output_.close(); 
-  }
+}
+
+// Add this new method
+std::string AllanVarianceComputor::getOutputFilePath() const {
+  return imu_output_file_;
+}
 
 void AllanVarianceComputor::allanVariance() {
 
