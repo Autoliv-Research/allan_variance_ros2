@@ -31,7 +31,11 @@ class AllanVarianceRos2 : public rclcpp::Node
       
       double durationTime = (std::clock() - start) / (double)CLOCKS_PER_SEC;
       RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Total computation time: %f s", durationTime);
-      RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Data written to allan_variance.csv");
+      const boost::filesystem::path csv_path =
+        boost::filesystem::absolute(boost::filesystem::path(output_path) / "allan_variance.csv");
+      RCLCPP_INFO_STREAM(
+        rclcpp::get_logger("rclcpp"),
+        "Data written to " << csv_path.string());
 
     }
 
@@ -66,7 +70,7 @@ int main(int argc, char** argv) {
   }
   
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<AllanVarianceRos2>(bag_path, config_file, output_path));
+  std::make_shared<AllanVarianceRos2>(bag_path, config_file, output_path);
   rclcpp::shutdown();
   return 0;
 }

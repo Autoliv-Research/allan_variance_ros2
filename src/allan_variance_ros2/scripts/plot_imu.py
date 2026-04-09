@@ -21,7 +21,12 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument("--input", type=str, default=None)
 parser.add_argument("--topic", type=str, default=None)
-parser.add_argument("--storage_id", type=str, default="mcap")
+parser.add_argument(
+    "--storage_id",
+    type=str,
+    default="",
+    help="rosbag2 storage plugin id (empty = from bag metadata.yaml)",
+)
 
 args = parser.parse_args()
 

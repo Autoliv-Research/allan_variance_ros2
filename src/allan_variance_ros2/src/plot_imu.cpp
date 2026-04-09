@@ -14,7 +14,7 @@ void plot_imu(std::string bag_path, std::string imu_topic) {
     
     rosbag2_storage::StorageOptions storage_options;
     storage_options.uri = bag_path;
-    storage_options.storage_id = "mcap";
+    storage_options.storage_id = "";
 
     rosbag2_cpp::ConverterOptions converter_options;
     converter_options.input_serialization_format = "cdr";
@@ -70,9 +70,12 @@ void plot_imu(std::string bag_path, std::string imu_topic) {
       // Log data to the internal buffer.
       rec.set_time_nanos("header_timestamp", (int64_t)tCurrNanoSeconds_);
       rec.set_time_nanos("received_timestamp", msg->time_stamp);
-      rec.log("acc/x", rerun::Scalar(imu9dof_msg->linear_acceleration.x));
+      rec.log(
+        "acc/x",
+        rerun::Scalars(rerun::Collection<rerun::components::Scalar>(
+          imu9dof_msg->linear_acceleration.x)));
     }
-    rec.save((std::string)"rerun_file.rrd");
+    (void)rec.save("rerun_file.rrd");
 
     if (!rclcpp::ok())
     {

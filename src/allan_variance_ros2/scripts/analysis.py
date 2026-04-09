@@ -14,6 +14,10 @@ import numpy as np
 from scipy.optimize import curve_fit
 
 
+# Plain YAML float; numpy scalars repr() as np.float64(...) otherwise.
+def yaml_float(x):
+	return str(float(np.asarray(x).item()))
+
 def line_func(x, m, b):
 	return m * x + b
 
@@ -139,8 +143,8 @@ worst_accel_white_noise = np.amax([accel_wn_intercept_x, accel_wn_intercept_y, a
 worst_accel_random_walk = np.amax([accel_rr_intercept_x, accel_rr_intercept_y, accel_rr_intercept_z])
 
 yaml_file.write("#Accelerometer\n")
-yaml_file.write("accelerometer_noise_density: " + repr(worst_accel_white_noise) + " \n")
-yaml_file.write("accelerometer_random_walk: " + repr(worst_accel_random_walk) + " \n")
+yaml_file.write("accelerometer_noise_density: " + yaml_float(worst_accel_white_noise) + "\n")
+yaml_file.write("accelerometer_random_walk: " + yaml_float(worst_accel_random_walk) + "\n")
 yaml_file.write("\n")
 
 
@@ -229,17 +233,17 @@ worst_gyro_random_walk = np.amax([gyro_rr_intercept_x, gyro_rr_intercept_y, gyro
 
 yaml_file.write("#Gyroscope\n")
 # Convert back to radians here
-yaml_file.write("gyroscope_noise_density: " + repr(worst_gyro_white_noise * np.pi / 180) + " \n")
-yaml_file.write("gyroscope_random_walk: " + repr(worst_gyro_random_walk * np.pi / 180) + " \n")
+yaml_file.write("gyroscope_noise_density: " + yaml_float(worst_gyro_white_noise * np.pi / 180) + "\n")
+yaml_file.write("gyroscope_random_walk: " + yaml_float(worst_gyro_random_walk * np.pi / 180) + "\n")
 yaml_file.write("\n")
 
 
 if args.config:
-	yaml_file.write("rostopic: " + repr(rostopic) + " \n")
-	yaml_file.write("update_rate: " + repr(update_rate) + " \n")
+	yaml_file.write("rostopic: " + repr(rostopic) + "\n")
+	yaml_file.write("update_rate: " + yaml_float(update_rate) + "\n")
 else:
 	yaml_file.write("rostopic: " + repr(rostopic) + " #Make sure this is correct\n")
-	yaml_file.write("update_rate: " + repr(update_rate) + " #Make sure this is correct\n")
+	yaml_file.write("update_rate: " + yaml_float(update_rate) + " #Make sure this is correct\n")
 yaml_file.write("\n")
 yaml_file.close()
 
