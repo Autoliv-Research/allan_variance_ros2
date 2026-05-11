@@ -53,9 +53,10 @@ src/AllanVarianceComputor.cpp
 )
 # target_link_libraries(${PROJECT_NAME} ${COLCON_PACKAGE_DEPENDENCIES})
 ament_target_dependencies(${PROJECT_NAME} ${COLCON_PACKAGE_DEPENDENCIES})
+target_link_libraries(${PROJECT_NAME} Boost::filesystem)
 
 add_executable(allan_variance src/allan_variance.cpp)
-target_link_libraries(allan_variance ${PROJECT_NAME} )
+target_link_libraries(allan_variance ${PROJECT_NAME} Boost::filesystem)
 
 add_executable(plot_imu src/plot_imu.cpp)
 target_link_libraries(plot_imu PRIVATE ${PROJECT_NAME} rerun_sdk)
