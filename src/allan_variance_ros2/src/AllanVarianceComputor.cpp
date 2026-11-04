@@ -1,5 +1,6 @@
-
 #include "allan_variance_ros2/AllanVarianceComputor.hpp"
+
+#include <boost/filesystem.hpp>
 
 namespace allan_variance_ros {
 
@@ -31,7 +32,26 @@ AllanVarianceComputor::AllanVarianceComputor(rclcpp::Node* nh, std::string confi
 void AllanVarianceComputor::run(std::string bag_path) {
   RCLCPP_INFO_STREAM(rclcpp::get_logger("rclcpp"),"Processing " << bag_path << " ...");
 
-  av_output_ = std::ofstream(imu_output_file_.c_str(), std::ofstream::out);
+  const boost::filesystem::path out_file(imu_output_file_);
+  const boost::filesystem::path parent_dir = out_file.parent_path();
+  if (!parent_dir.empty()) {
+    boost::system::error_code ec;
+    boost::filesystem::create_directories(parent_dir, ec);
+    if (ec) {
+      RCLCPP_ERROR_STREAM(
+        rclcpp::get_logger("rclcpp"),
+        "Failed to create output directory " << parent_dir.string() << ": " << ec.message());
+      return;
+    }
+  }
+
+  av_output_.open(imu_output_file_.c_str(), std::ofstream::out);
+  if (!av_output_.is_open()) {
+    RCLCPP_ERROR_STREAM(
+      rclcpp::get_logger("rclcpp"),
+      "Could not open output file for writing: " << imu_output_file_);
+    return;
+  }
 
   int imu_counter = 0;
 
@@ -39,7 +59,7 @@ void AllanVarianceComputor::run(std::string bag_path) {
     
     rosbag2_storage::StorageOptions storage_options;
     storage_options.uri = bag_path;
-    storage_options.storage_id = "mcap";
+    storage_options.storage_id = "";
 
     rosbag2_cpp::ConverterOptions converter_options;
     converter_options.input_serialization_format = "cdr";

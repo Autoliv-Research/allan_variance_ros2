@@ -13,7 +13,7 @@ void plot_imu(std::string bag_path, std::string imu_topic) {
     
     rosbag2_storage::StorageOptions storage_options;
     storage_options.uri = bag_path;
-    storage_options.storage_id = "mcap";
+    storage_options.storage_id = "";
 
     rosbag2_cpp::ConverterOptions converter_options;
     converter_options.input_serialization_format = "cdr";
@@ -69,12 +69,10 @@ void plot_imu(std::string bag_path, std::string imu_topic) {
       // Log data to the internal buffer.
       rec.set_time_timestamp_nanos_since_epoch("header_timestamp", (int64_t)tCurrNanoSeconds_);
       rec.set_time_timestamp_nanos_since_epoch("received_timestamp", msg->time_stamp);
-      // Fix: Use rerun::archetypes::Scalar for logging scalar values
       rec.log("acc/x", rerun::archetypes::Scalars(imu9dof_msg->linear_acceleration.x));
     }
     auto result = rec.save((std::string)"rerun_file.rrd");
     if (result.is_err()) {
-      // Fix: Access error directly without .error.description
       RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to save rerun file");
     }
 
