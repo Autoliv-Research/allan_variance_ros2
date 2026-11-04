@@ -12,13 +12,11 @@
 
   <license>BSD-3-Clause</license>
 
-  <url type="repository">https://github.com/christian-nils/allan_variance_ros2</url>
+  <url type="repository">https://github.com/autoliv-research/allan_variance_ros2</url>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <build_depend>boost</build_depend>
-  <build_depend>boost-filesystem</build_depend>
-  <build_depend>eigen3</build_depend>
 
   <depend>rclcpp</depend>
   <depend>sensor_msgs</depend>
