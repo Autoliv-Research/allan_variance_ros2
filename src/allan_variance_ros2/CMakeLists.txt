@@ -15,6 +15,7 @@ set(COLCON_PACKAGE_DEPENDENCIES
   Eigen3
   rclcpp
   rosbag2_cpp
+  rosbag2_storage
   std_msgs
   yaml-cpp
   OpenMP
@@ -24,6 +25,7 @@ set(COLCON_PACKAGE_DEPENDENCIES
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rosbag2_cpp REQUIRED)
+find_package(rosbag2_storage REQUIRED)
 find_package(Boost REQUIRED filesystem)
 find_package(std_msgs REQUIRED)
 find_package(yaml-cpp REQUIRED)
@@ -53,9 +55,10 @@ src/AllanVarianceComputor.cpp
 )
 # target_link_libraries(${PROJECT_NAME} ${COLCON_PACKAGE_DEPENDENCIES})
 ament_target_dependencies(${PROJECT_NAME} ${COLCON_PACKAGE_DEPENDENCIES})
+target_link_libraries(${PROJECT_NAME} Boost::filesystem)
 
 add_executable(allan_variance src/allan_variance.cpp)
-target_link_libraries(allan_variance ${PROJECT_NAME} )
+target_link_libraries(allan_variance ${PROJECT_NAME} Boost::filesystem)
 
 add_executable(plot_imu src/plot_imu.cpp)
 target_link_libraries(plot_imu PRIVATE ${PROJECT_NAME} rerun_sdk)
