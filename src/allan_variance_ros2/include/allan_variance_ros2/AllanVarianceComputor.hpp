@@ -4,7 +4,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include <rosbag2_cpp/reader.hpp>
 #include <rosbag2_cpp/readers/sequential_reader.hpp>
-#include <rosbag2_cpp/storage_options.hpp>
+#include <rosbag2_storage/storage_options.hpp>
 #include <rosbag2_storage/storage_filter.hpp> 
 #include "sensor_msgs/msg/imu.hpp"
 
@@ -75,6 +75,7 @@ public:
 
   void run(std::string bag_path);
   void closeOutputs();
+  std::string getOutputFilePath() const; 
   void allanVariance();
   void writeAllanDeviation(std::vector<double> variance, double period);
 

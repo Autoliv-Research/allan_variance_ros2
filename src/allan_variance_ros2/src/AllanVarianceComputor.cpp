@@ -94,7 +94,7 @@ void AllanVarianceComputor::run(std::string bag_path) {
     while (bag.has_next() && ((tCurrNanoSeconds_ - firstTime_) < (sequence_duration_ + sequence_offset_)*1e9))
     {
       msg = bag.read_next();
-      rclcpp::SerializedMessage serialized_msg(*msg->serialized_data);   
+      rclcpp::SerializedMessage serialized_msg(*msg->serialized_data);
       serialization_.deserialize_message(&serialized_msg, imu_msg.get());
 
       tCurrNanoSeconds_ = imu_msg->header.stamp.nanosec + imu_msg->header.stamp.sec * 1e9;
@@ -151,7 +151,12 @@ void AllanVarianceComputor::run(std::string bag_path) {
  
 void AllanVarianceComputor::closeOutputs() { 
   av_output_.close(); 
-  }
+}
+
+// Add this new method
+std::string AllanVarianceComputor::getOutputFilePath() const {
+  return imu_output_file_;
+}
 
 void AllanVarianceComputor::allanVariance() {
 
