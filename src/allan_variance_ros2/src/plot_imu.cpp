@@ -68,7 +68,7 @@ void plot_imu(std::string bag_path, std::string imu_topic) {
 
       // Log data to the internal buffer.
       rec.set_time_timestamp_nanos_since_epoch("header_timestamp", (int64_t)tCurrNanoSeconds_);
-      rec.set_time_timestamp_nanos_since_epoch("received_timestamp", msg->time_stamp);
+      rec.set_time_timestamp_nanos_since_epoch("received_timestamp", msg->recv_timestamp);
       rec.log("acc/x", rerun::archetypes::Scalars(imu9dof_msg->linear_acceleration.x));
     }
     auto result = rec.save((std::string)"rerun_file.rrd");

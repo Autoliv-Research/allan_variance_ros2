@@ -17,17 +17,34 @@ While there are many open source tools which do the same thing, this package has
 
 ## How to use
 
-1. Place your IMU on some damped surface and record your IMU data to a rosbag. You must record **at least** 3 hours of data. The longer the sequence, the more accurate the results.
+1. Place your IMU on some damped surface and record your IMU data to a rosbag. You must record **at least** 3 hours of data, **otherwise the analysis will fail**. The longer the sequence, the more accurate the results.
 
 2. Run the Allan Variance computation tool (example config files provided):
 
-  ``ros2 run allan_variance_ros2 allan_variance [path_to_folder_containing_bag] [path_to_config_file]``
+  ``ros2 run allan_variance_ros2 allan_variance [path_to_folder_containing_bag] [path_to_config_file] [output_path]``
 
 3. This will compute the Allan Deviation for the IMU and generate a CSV. The next step is to visualize the plots and get parameters. For this run:
 
   ``python3 ./src/allan_variance_ros2/scripts/analysis.py --data allan_variance.csv``
 
-  Press `space` to go to next figure.
+  Press `space` to go to the next figure.
+
+## How to use with devcontainer
+
+This was not tested with other IDE than VSCode (e.g., Theia IDE).
+
+1. If you run with you local username, check that your environment variable $USER returns your username. Otherwise modify `devcontainer.json` to set `USERNAME` to the value you want. y
+2. Build and open the dev container
+3. Once opened, you should execute in a new terminal:
+
+```bash
+sudo apt update && sudo apt upgrade -y
+sudo rosdep init
+rosdep update
+rosdep install --from-path src --ignore-src
+. /opt/ros/kilted/setup.bash
+```
+4. After that you can build the package and use it as described above.
 
 ## Kalibr
 
