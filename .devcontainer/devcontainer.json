@@ -1,0 +1,41 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
+{
+  "name": "ROS2 Dev Container",
+  "build": {
+    "context": "..",
+    "dockerfile": "./Dockerfile",
+    "args": {
+      "USERNAME": "${localEnv:USER:root}"
+    }
+  },
+  "runArgs": [
+    "--volume=/tmp/.X11-unix:/tmp/.X11-unix",
+    "--volume=/dev/dri/renderD128:/dev/dri/renderD128",
+    "--network=host"
+    //"all,capabilities=video"
+  ],
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  // "features": {},
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // "forwardPorts": [],
+  // Uncomment the next line to run commands after the container is created.
+  // "postCreateCommand": "/bin/bash setup_workspace.sh",
+  // Configure tool-specific properties.
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-iot.vscode-ros"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "/bin/bash"
+          }
+        }
+      }
+    }
+  }
+}
